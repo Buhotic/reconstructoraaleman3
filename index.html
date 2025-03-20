@@ -17,6 +17,7 @@
                 <li><a href="#vision">🌟 Visión</a></li>
                 <li><a href="#valores">💡 Valores</a></li>
                 <li><a href="#servicios">🔧 Servicios</a></li>
+                <li><a href="#comentarios">💬 Comentarios</a></li>
                 <li><a href="#contacto">📞 Contacto</a></li>
             </ul>
         </nav>
@@ -65,6 +66,16 @@
         </ul>
     </section>
 
+    <section id="comentarios" class="section">
+        <h2>💬 Comentarios</h2>
+        <form id="comment-form">
+            <input type="text" id="nombre" placeholder="Tu Nombre" required>
+            <textarea id="mensaje" placeholder="Escribe tu comentario" required></textarea>
+            <button type="submit">Enviar</button>
+        </form>
+        <div id="comments-container"></div>
+    </section>
+
     <section id="contacto" class="section">
         <h2>📞 Contacto</h2>
         <p>📍 <strong>Ubicación:</strong> [Dirección exacta]</p>
@@ -76,5 +87,39 @@
     <footer>
         <p>&copy; 2025 Reconstructora Alemán. Todos los derechos reservados.</p>
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById("comment-form");
+            const commentsContainer = document.getElementById("comments-container");
+            
+            function loadComments() {
+                commentsContainer.innerHTML = "";
+                const comments = JSON.parse(localStorage.getItem("comments")) || [];
+                comments.forEach(comment => {
+                    const commentDiv = document.createElement("div");
+                    commentDiv.classList.add("comment");
+                    commentDiv.innerHTML = `<strong>${comment.name}:</strong> ${comment.message}`;
+                    commentsContainer.appendChild(commentDiv);
+                });
+            }
+            
+            form.addEventListener("submit", function(event) {
+                event.preventDefault();
+                const name = document.getElementById("nombre").value;
+                const message = document.getElementById("mensaje").value;
+                
+                if (name && message) {
+                    const comments = JSON.parse(localStorage.getItem("comments")) || [];
+                    comments.push({ name, message });
+                    localStorage.setItem("comments", JSON.stringify(comments));
+                    form.reset();
+                    loadComments();
+                }
+            });
+            
+            loadComments();
+        });
+    </script>
 </body>
 </html>
